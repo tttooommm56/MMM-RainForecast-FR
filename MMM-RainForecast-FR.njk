@@ -20,17 +20,17 @@
 		<table class="rainFcTable">
 			<tr>
 				{% for rainPlot in rainData.rainGraph  %}
-					<td class={{ "raining" if rainPlot.niveauPluie == 4 }}></td>
+					<td class={{ "raining" if rainPlot.niveauPluie >= 4 }}></td>
 				{% endfor %}
 			</tr>
 			<tr>
 				{% for rainPlot in rainData.rainGraph  %}
-					<td class={{ "raining" if rainPlot.niveauPluie == 3 }}></td>
+					<td class={{ "raining" if rainPlot.niveauPluie >= 3 }}></td>
 				{% endfor %}
 			</tr>
 			<tr>
 				{% for rainPlot in rainData.rainGraph  %}
-					<td class={{ "raining" if rainPlot.niveauPluie == 2 }}></td>
+					<td class={{ "raining" if rainPlot.niveauPluie >= 2 }}></td>
 				{% endfor %}
 			</tr>
 
