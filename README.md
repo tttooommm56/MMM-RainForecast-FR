@@ -7,7 +7,7 @@ A <a href="https://github.com/MichMich/MagicMirror">MagicMirror</a> module to di
 2. Add the module inside `config.js` placing it where you prefer 
 
 
-## Config
+## Configuration
 
 
 |Option|Description|
