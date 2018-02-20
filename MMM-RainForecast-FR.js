@@ -28,7 +28,9 @@ Module.register("MMM-RainForecast-FR", {
 		rainData: {
             rainText: "Pas de données",
             rainGraph: [],
-            rainGraphTimes: []
+            rainGraphTimes: [],
+            hasRain: false,
+            hasData: false
 		}
     },
 
@@ -84,8 +86,8 @@ Module.register("MMM-RainForecast-FR", {
 			Log.info(data);
 		} 
 		
-        
-        if (data && data.niveauPluieText) {
+        if (data) {
+            this.config.rainData.hasData = data.hasData;
             
             // Text data
             if (data.niveauPluieText) {
@@ -94,6 +96,9 @@ Module.register("MMM-RainForecast-FR", {
             // Graph data
             if (data.dataCadran) {
                 this.config.rainData.rainGraph = data.dataCadran;
+                const dataWithRain = this.config.rainData.rainGraph.filter(rainGraph => rainGraph.niveauPluie >= 2);
+                console.log(dataWithRain);
+                this.config.rainData.hasRain = dataWithRain.length > 0;
             }
             
             // Graph times
@@ -109,8 +114,11 @@ Module.register("MMM-RainForecast-FR", {
                     console.error("Wrong time in Meteo France response !")
                 }
             }
-			this.updateDom(this.config.animationSpeed);
-		}
+            this.updateDom(this.config.animationSpeed);
+            
+		} else {
+            this.config.rainData.hasData = false;
+        }
     },
 
 

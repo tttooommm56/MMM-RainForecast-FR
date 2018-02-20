@@ -1,58 +1,23 @@
-.rainFcTable {
+.MMM-RainForecast-FR {
+    font-size: 18px;
+}
+.MMM-RainForecast-FR .rainFcTable {
     border-collapse: collapse !important;
 }
-.rainFcTable tr {
-    height: 22px;
+.MMM-RainForecast-FR .rainFcTable tr {
+    height: 27px;
     border-top: 1px solid #666;
 }
-.rainFcTable td {
-    width: 20px;
+.MMM-RainForecast-FR .rainFcTable td {
+    width: 25px;
 }
-.rainFcHours td {
-    font-size: 12px;
+.MMM-RainForecast-FR .rainFcHours td {
+    font-size: 16px;
     text-align: left !important;
 }
-.rainFcHours td span {
+.MMM-RainForecast-FR .rainFcHours td span {
     margin-left: -18px;
 }
-/*
-.raining1 {
-    background-color: #eee; 
-}
-.raining2 {
-    background-color: #999; 
-}
-.raining3 {
-    background-color: #333; 
-}
-.legendRaining1 {
-    color: #eee; 
-}
-.legendRaining2 {
-    color: #999; 
-}
-.legendRaining3 {
-    color: #333; 
-}
-*/
-.raining {
+.MMM-RainForecast-FR .raining {
     background-color: #fff;
-}
-.raining1 {
-    background-color: #a3e3fe;
-}
-.raining2 {
-    background-color: #009EE0;
-}
-.raining3 {
-    background-color: #006AB3;
-}
-.legendRaining1 {
-    color:  #a3e3fe;
-}
-.legendRaining2 {
-    color: #009EE0;
-}
-.legendRaining3 {
-    color: #006AB3;
 }

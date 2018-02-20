@@ -2,44 +2,50 @@
 	Use ` | safe` to allow html tages within the text string.
 	https://mozilla.github.io/nunjucks/templating.html#autoescaping
 -->
-<div class="xsmall">
+<div class="MMM-RainForecast-FR small light">
+	{% if not rainData.hasData %}
+		Pas de données disponibles
+		
+	{% elif not rainData.hasRain %}
+		Pas de pluie prévue dans l'heure
 
-	{% if showText %}
-		<!-- Text rain forecast -->
-		<table>
-			{% for text in rainData.rainText  %}
-				<tr><td style="text-align: left">{{text | replace("De", "De ") | safe}}</td></tr>
-			{% endfor %}
-		</table>
+	{% else %}
+		{% if showText %}
+			<!-- Text rain forecast -->
+			<table>
+				{% for text in rainData.rainText  %}
+					<tr><td style="text-align: left">{{text | replace("De", "De ") | safe}}</td></tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		<br/>
+
+		{% if showGraph %}
+			<!-- Graph rain forecast -->
+			<table class="rainFcTable">
+				<tr>
+					{% for rainPlot in rainData.rainGraph  %}
+						<td class={{ "raining" if rainPlot.niveauPluie >= 4 }}></td>
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for rainPlot in rainData.rainGraph  %}
+						<td class={{ "raining" if rainPlot.niveauPluie >= 3 }}></td>
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for rainPlot in rainData.rainGraph  %}
+						<td class={{ "raining" if rainPlot.niveauPluie >= 2 }}></td>
+					{% endfor %}
+				</tr>
+
+				<tr class="rainFcHours">
+					{% for timePlot in rainData.rainGraphTimes  %}
+						<td colspan="2"><span>{{ timePlot }}</span></td>
+					{% endfor %}
+				</tr>
+			</table>	
+		{% endif %}
 	{% endif %}
-
-	<br/>
-
-	{% if showGraph %}
-		<!-- Graph rain forecast -->
-		<table class="rainFcTable">
-			<tr>
-				{% for rainPlot in rainData.rainGraph  %}
-					<td class={{ "raining" if rainPlot.niveauPluie >= 4 }}></td>
-				{% endfor %}
-			</tr>
-			<tr>
-				{% for rainPlot in rainData.rainGraph  %}
-					<td class={{ "raining" if rainPlot.niveauPluie >= 3 }}></td>
-				{% endfor %}
-			</tr>
-			<tr>
-				{% for rainPlot in rainData.rainGraph  %}
-					<td class={{ "raining" if rainPlot.niveauPluie >= 2 }}></td>
-				{% endfor %}
-			</tr>
-
-			<tr class="rainFcHours">
-				{% for timePlot in rainData.rainGraphTimes  %}
-					<td colspan="2"><span>{{ timePlot }}</span></td>
-				{% endfor %}
-			</tr>
-		</table>	
-	{% endif %}
-
 </div>
