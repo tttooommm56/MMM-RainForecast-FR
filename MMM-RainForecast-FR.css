@@ -5,8 +5,8 @@
     border-collapse: collapse !important;
 }
 .MMM-RainForecast-FR .rainFcTable tr {
-    height: 27px;
-    border-top: 1px solid #666;
+    height: 15px;
+    border-top: 1px solid #000;
 }
 .MMM-RainForecast-FR .rainFcTable td {
     width: 25px;
