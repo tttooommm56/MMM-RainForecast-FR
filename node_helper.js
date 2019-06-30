@@ -41,7 +41,6 @@ module.exports = NodeHelper.create({
   
   //Subclass socketNotificationReceived received.
   socketNotificationReceived: function(notification, payload) {
-    console.log(notification); 
     var self = this;
     
     if (notification === "GET_RAINFORECAST_FR") {          
