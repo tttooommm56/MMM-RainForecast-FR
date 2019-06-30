@@ -68,7 +68,7 @@ Module.register("MMM-RainForecast-FR", {
     },
 
     getRainForecast: function() {
-        if ( this.config.debug === 1 ) {
+        if (this.config.debug === 1) {
 			Log.info("Meteo France rain forecast : Getting info.");
 		}
 		this.sendSocketNotification(this.config.socknot, this.config);
@@ -81,7 +81,7 @@ Module.register("MMM-RainForecast-FR", {
      */
 
     processWeather: function(data) {   
-		if ( this.config.debug === 1 ) {
+		if (this.config.debug === 1) {
 			Log.info('RAINFORECAST_FR processWeather data : ');
 			Log.info(data);
 		} 
@@ -97,7 +97,10 @@ Module.register("MMM-RainForecast-FR", {
             if (data.dataCadran) {
                 this.config.rainData.rainGraph = data.dataCadran;
                 const dataWithRain = this.config.rainData.rainGraph.filter(rainGraph => rainGraph.niveauPluie >= 2);
-                console.log(dataWithRain);
+                if (this.config.debug === 1) {
+                    Log.info(this.name + " getData : ");
+                    Log.info(dataWithRain);
+                }
                 this.config.rainData.hasRain = dataWithRain.length > 0;
             }
             
@@ -126,13 +129,13 @@ Module.register("MMM-RainForecast-FR", {
     socketNotificationReceived: function(notification, payload) {
         var self = this;
 
-        if ( this.config.debug === 1 ) {
+        if (this.config.debug === 1) {
 			Log.info('RAINFORECAST_FR received ' + notification);
 		}
      
 
         if (notification === this.config.sockrcv) {
-            if ( this.config.debug === 1 ) {
+            if (this.config.debug === 1) {
 				Log.info('received ' + this.config.sockrcv);
 				Log.info(payload);
 			}
