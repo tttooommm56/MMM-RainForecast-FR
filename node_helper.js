@@ -19,24 +19,24 @@ module.exports = NodeHelper.create({
 
   
   fecthMeteoFrance: function() {
-        var self = this;
-        this.fetcherRunning = true; 
-               
-        var meteoUrl = this.config.apiBase + this.config.codeInsee + 0;
-		if ( this.config.debug === 1 ) {
-			console.log(moment().format() + " 4 " + this.name  + ": " + meteoUrl);
-		}
-        request({url: meteoUrl, method: 'GET'}, function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                self.sendSocketNotification('RAINFORECAST_FR', body);
-            } else {
-                console.log(moment().format() + " 6 " + self.name + ": " + error);
-            }
-                
-            setTimeout(function() {
-                self.fecthMeteoFrance();
-            }, self.config.updateInterval);
-        });
+    var self = this;
+    this.fetcherRunning = true; 
+    var token = "__Wj7dVSTjV9YGu1guveLyDq0g7S7TfTjaHBTPTpO0kj8__";
+    var meteoUrl = this.config.apiBaseUrl + "?lang=fr&lat=" + this.config.lat + "&lon=" + this.config.lon + "&token=" + token;
+    if (self.config.debug === 1) {
+        console.log(moment().format() + " 4 " + self.name  + ": " + meteoUrl);
+    }
+    request({url: meteoUrl, method: 'GET'}, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            self.sendSocketNotification('RAINFORECAST_FR', body);
+        } else {
+            console.log(moment().format() + " 5 " + self.name + ": " + error);
+        }
+            
+        setTimeout(function() {
+            self.fecthMeteoFrance();
+        }, self.config.updateInterval);
+    });   
   },
   
   //Subclass socketNotificationReceived received.

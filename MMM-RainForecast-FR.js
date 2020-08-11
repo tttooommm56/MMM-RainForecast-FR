@@ -21,8 +21,7 @@ Module.register("MMM-RainForecast-FR", {
 		socknot: "GET_RAINFORECAST_FR",
 		sockrcv: "RAINFORECAST_FR",
         retryDelay: 2500,
-        apiBase: "http://www.meteofrance.com/mf3-rpc-portlet/rest/pluie/",
-        codeInsee: '',
+        apiBaseUrl: "http://webservice.meteofrance.com/rain",
         showText: true,
         showGraph: true,
 		rainData: {
@@ -79,7 +78,6 @@ Module.register("MMM-RainForecast-FR", {
      *
      * argument data object - Weather information received form meteofrance.fr.
      */
-
     processWeather: function(data) {   
 		if (this.config.debug === 1) {
 			Log.info('RAINFORECAST_FR processWeather data : ');
@@ -87,36 +85,24 @@ Module.register("MMM-RainForecast-FR", {
 		} 
 		
         if (data) {
-            this.config.rainData.hasData = data.hasData;
+            this.config.rainData.hasData = data.forecast != null;      
             
-            // Text data
-            if (data.niveauPluieText) {
-                this.config.rainData.rainText = data.niveauPluieText;
-            }
-            // Graph data
-            if (data.dataCadran) {
-                this.config.rainData.rainGraph = data.dataCadran;
-                const dataWithRain = this.config.rainData.rainGraph.filter(rainGraph => rainGraph.niveauPluie >= 2);
+            if (data.forecast && data.forecast.length > 0) {
+                // Text data
+                this.config.rainData.rainText = data.forecast[0].desc;
+
+                // Graph data
+                this.config.rainData.rainGraph = data.forecast;
+                const dataWithRain = this.config.rainData.rainGraph.filter(rainGraph => rainGraph.rain >= 2);
                 if (this.config.debug === 1) {
                     Log.info(this.name + " getData : ");
                     Log.info(dataWithRain);
                 }
                 this.config.rainData.hasRain = dataWithRain.length > 0;
+
+                data.forecast.forEach(element => this.config.rainData.rainGraphTimes.push(moment(element.dt, "X").format('H:mm')));
             }
-            
-            // Graph times
-            if (data.echeance) {
-                let startTime = moment(data.echeance, "YYYYMMDDHHmm");
-                if (startTime.isValid()) {
-                    this.config.rainData.rainGraphTimes = [];
-                    for (var i=0; i<=6; i++) {
-                        this.config.rainData.rainGraphTimes.push(startTime.format('H:mm'));
-                        startTime = startTime.add(10, 'm');
-                    }
-                } else {
-                    console.error("Wrong time in Meteo France response !")
-                }
-            }
+
             this.updateDom(this.config.animationSpeed);
             
 		} else {
@@ -124,15 +110,12 @@ Module.register("MMM-RainForecast-FR", {
         }
     },
 
-
-
     socketNotificationReceived: function(notification, payload) {
         var self = this;
 
         if (this.config.debug === 1) {
 			Log.info('RAINFORECAST_FR received ' + notification);
 		}
-     
 
         if (notification === this.config.sockrcv) {
             if (this.config.debug === 1) {

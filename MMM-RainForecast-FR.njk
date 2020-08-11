@@ -12,11 +12,7 @@
 	{% else %}
 		{% if showText %}
 			<!-- Text rain forecast -->
-			<table>
-				{% for text in rainData.rainText  %}
-					<tr><td style="text-align: left">{{text | replace("De", "De ") | safe}}</td></tr>
-				{% endfor %}
-			</table>
+			{{ rainData.rainText }}
 			<br/>
 		{% endif %}	
 
@@ -25,23 +21,23 @@
 			<table class="rainFcTable">
 				<tr>
 					{% for rainPlot in rainData.rainGraph  %}
-						<td class={{ "raining" if rainPlot.niveauPluie >= 4 }}></td>
+						<td class={{ "raining" if rainPlot.rain >= 4 }}></td>
 					{% endfor %}
 				</tr>
 				<tr>
 					{% for rainPlot in rainData.rainGraph  %}
-						<td class={{ "raining" if rainPlot.niveauPluie >= 3 }}></td>
+						<td class={{ "raining" if rainPlot.rain >= 3 }}></td>
 					{% endfor %}
 				</tr>
 				<tr>
 					{% for rainPlot in rainData.rainGraph  %}
-						<td class={{ "raining" if rainPlot.niveauPluie >= 2 }}></td>
+						<td class={{ "raining" if rainPlot.rain >= 2 }}></td>
 					{% endfor %}
 				</tr>
 
 				<tr class="rainFcHours">
 					{% for timePlot in rainData.rainGraphTimes  %}
-						<td colspan="2"><span>{{ timePlot }}</span></td>
+						<td><span>{{ timePlot }}</span></td>
 					{% endfor %}
 				</tr>
 			</table>	

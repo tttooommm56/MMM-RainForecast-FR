@@ -12,7 +12,8 @@ A <a href="https://github.com/MichMich/MagicMirror">MagicMirror</a> module to di
 
 |Option|Description|
 |---|---|
-|`codeInsee`|The INSEE code for your city.<br>**Type:** `string`<br>**Default:** <i></i>|
+|`lat`|Your latitude.<br>**Type:** `string`<br>**Default:** <i></i>|
+|`lon`|Your longitude.<br>**Type:** `string`<br>**Default:** <i></i>|
 |`showText`|Display rain forecast text.<br>**Type:** `boolean`<br>**Default:** <i>true</i>|
 |`showGraph`|Display rain forecast graph.<br>**Type:** `boolean`<br>**Default:** <i>true</i>|
 
@@ -23,7 +24,8 @@ Here is an example of an entry in `config.js`
 	position: 'bottom_right',
 	header: 'Prevision pluie',
 	config: {
-		codeInsee: '35238',
+		lat: '47.369582',
+		lon: '1.563980',
 		showText: true,
 		showGraph: true
 	}
@@ -37,4 +39,4 @@ Here is an example of an entry in `config.js`
 
 
 ## Notes
-Data provided by <a href="http://www.meteofrance.com/previsions-meteo-france/previsions-pluie">Météo France</a> and updated every 5 minutes.
+Data provided by <a href="http://www.meteofrance.com">Météo France</a> and updated every 5 minutes.
