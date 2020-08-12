@@ -1,5 +1,5 @@
 .MMM-RainForecast-FR {
-    font-size: 16px;
+    font-size: 18px;
 }
 .MMM-RainForecast-FR .rainFcTable {
     border-collapse: collapse !important;
@@ -12,11 +12,11 @@
     width: 40px;
 }
 .MMM-RainForecast-FR .rainFcHours td {
-    font-size: 12px;
+    font-size: 14px;
     text-align: left !important;
 }
 .MMM-RainForecast-FR .rainFcHours td span {
-    margin-left: -18px;
+    margin-left: -14px;
 }
 .MMM-RainForecast-FR .raining {
     background-color: #fff;

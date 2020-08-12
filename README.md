@@ -12,8 +12,8 @@ A <a href="https://github.com/MichMich/MagicMirror">MagicMirror</a> module to di
 
 |Option|Description|
 |---|---|
-|`lat`|Your latitude.<br>**Type:** `string`<br>**Default:** <i></i>|
-|`lon`|Your longitude.<br>**Type:** `string`<br>**Default:** <i></i>|
+|`lat`|Your latitude.<br>**Type:** `number`
+|`lon`|Your longitude.<br>**Type:** `number`
 |`showText`|Display rain forecast text.<br>**Type:** `boolean`<br>**Default:** <i>true</i>|
 |`showGraph`|Display rain forecast graph.<br>**Type:** `boolean`<br>**Default:** <i>true</i>|
 
@@ -24,8 +24,8 @@ Here is an example of an entry in `config.js`
 	position: 'bottom_right',
 	header: 'Prevision pluie',
 	config: {
-		lat: '47.369582',
-		lon: '1.563980',
+		lat: 47.369582,
+		lon: 1.563980,
 		showText: true,
 		showGraph: true
 	}
