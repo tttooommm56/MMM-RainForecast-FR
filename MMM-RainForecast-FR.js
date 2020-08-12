@@ -99,7 +99,7 @@ Module.register("MMM-RainForecast-FR", {
                     Log.info(dataWithRain);
                 }
                 this.config.rainData.hasRain = dataWithRain.length > 0;
-
+                this.config.rainData.rainGraphTimes = [];
                 data.forecast.forEach(element => this.config.rainData.rainGraphTimes.push(moment(element.dt, "X").format('H:mm')));
             }
 
