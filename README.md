@@ -4,7 +4,8 @@ A <a href="https://github.com/MichMich/MagicMirror">MagicMirror</a> module to di
 
 ## Installation
 1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/tttooommm56/MMM-RainForecast-FR.git`.
-2. Add the module inside `config.js` placing it where you prefer 
+2. Enter the new `MMM-RainForecast-FR` directory and execute `npm install`.
+3. Add the module inside `config.js` placing it where you prefer 
 
 
 ## Configuration
