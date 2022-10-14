@@ -1,21 +1,22 @@
-.MMM-RainForecast-FR {
-    font-size: 18px;
+.MMM-RainForecast-FR .title,
+.MMM-RainForecast-FR .timeline {
+	margin-bottom: 10px;
 }
-.MMM-RainForecast-FR .rainFcTable {
+
+.MMM-RainForecast-FR .timeline table {
     border-collapse: collapse !important;
 }
-.MMM-RainForecast-FR .rainFcTable tr {
+.MMM-RainForecast-FR .timeline tr {
     height: 15px;
     border-top: 1px solid #000;
 }
-.MMM-RainForecast-FR .rainFcTable td {
+.MMM-RainForecast-FR .timeline td {
     width: 40px;
 }
-.MMM-RainForecast-FR .rainFcHours td {
-    font-size: 14px;
+.MMM-RainForecast-FR .hours td {
     text-align: left !important;
 }
-.MMM-RainForecast-FR .rainFcHours td span {
+.MMM-RainForecast-FR .hours td span {
     margin-left: -14px;
 }
 .MMM-RainForecast-FR .raining {

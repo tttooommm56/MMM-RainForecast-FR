@@ -2,45 +2,50 @@
 	Use ` | safe` to allow html tages within the text string.
 	https://mozilla.github.io/nunjucks/templating.html#autoescaping
 -->
-<div class="MMM-RainForecast-FR small light">
+{% if loaded %}
 	{% if not rainData.hasData %}
-		Pas de données disponibles
-		
+		<div class="normal medium title">
+			Pas de données disponibles
+		</div>
 	{% elif not rainData.hasRain %}
-		Pas de pluie prévue dans l'heure
-
+		<div class="normal medium title">
+			Pas de pluie prévue dans l'heure
+		</div>
 	{% else %}
-		{% if showText %}
+		{% if config.showText %}
 			<!-- Text rain forecast -->
-			{{ rainData.rainText }}
-			<br/>
+			<div class="normal medium title">
+				{{ rainData.rainText }}
+			</div>
 		{% endif %}	
 
-		{% if showGraph %}
+		{% if config.showGraph %}
 			<!-- Graph rain forecast -->
-			<table class="rainFcTable">
-				<tr>
-					{% for rainPlot in rainData.rainGraph  %}
-						<td class={{ "raining" if rainPlot.rain >= 4 }}></td>
-					{% endfor %}
-				</tr>
-				<tr>
-					{% for rainPlot in rainData.rainGraph  %}
-						<td class={{ "raining" if rainPlot.rain >= 3 }}></td>
-					{% endfor %}
-				</tr>
-				<tr>
-					{% for rainPlot in rainData.rainGraph  %}
-						<td class={{ "raining" if rainPlot.rain >= 2 }}></td>
-					{% endfor %}
-				</tr>
+			<div class="timeline">
+				<table>
+					<tr>
+						{% for rainPlot in rainData.rainGraph  %}
+							<td class={{ "raining" if rainPlot.rain >= 4 }}></td>
+						{% endfor %}
+					</tr>
+					<tr>
+						{% for rainPlot in rainData.rainGraph  %}
+							<td class={{ "raining" if rainPlot.rain >= 3 }}></td>
+						{% endfor %}
+					</tr>
+					<tr>
+						{% for rainPlot in rainData.rainGraph  %}
+							<td class={{ "raining" if rainPlot.rain >= 2 }}></td>
+						{% endfor %}
+					</tr>
 
-				<tr class="rainFcHours">
-					{% for timePlot in rainData.rainGraphTimes  %}
-						<td><span>{{ timePlot }}</span></td>
-					{% endfor %}
-				</tr>
-			</table>	
+					<tr class="hours">
+						{% for timePlot in rainData.rainGraphTimes  %}
+							<td><span class="xsmall light">{{ timePlot }}</span></td>
+						{% endfor %}
+					</tr>
+				</table>
+			</div>	
 		{% endif %}
 	{% endif %}
-</div>
+{% endif %}	

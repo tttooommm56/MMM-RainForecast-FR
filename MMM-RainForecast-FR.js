@@ -9,68 +9,52 @@ Module.register("MMM-RainForecast-FR", {
 
     // Default module config.
     defaults: {
-        coloricon: false,
         updateInterval: 5 * 60 * 1000, // every 5 minutes
-        timeFormat: config.timeFormat,
-        lang: config.language,
-        fctext: "1",
-        alerttime: 5000,
-        sysstat: 0,
-        scaletxt: 1,
-		debug: 0,
-		socknot: "GET_RAINFORECAST_FR",
-		sockrcv: "RAINFORECAST_FR",
-        retryDelay: 2500,
+        initialLoadDelay: 0, // 0 seconds delay
         apiBaseUrl: "http://webservice.meteofrance.com/rain",
         showText: true,
-        showGraph: true,
-		rainData: {
+        showGraph: true
+    },
+
+    getTemplate: function () {
+        return "MMM-RainForecast-FR.njk"
+    },
+
+    getTemplateData: function () {
+        return {
+            config: this.config,
+            rainData: this.rainData,
+            loaded: this.loaded
+        };
+    },
+
+    // Define required scripts.
+    getScripts: function () {
+        return ["moment.js"];
+    },
+
+    // Define required scripts.
+    getStyles: function () {
+        return ["MMM-RainForecast-FR.css"];
+    },
+
+    // Define start sequence.
+    start: function () {
+        Log.info("Starting module: " + this.name);
+
+        // Set locale.
+        moment.locale(config.language);
+
+        this.rainData = {
             rainText: "Pas de données",
             rainGraph: [],
             rainGraphTimes: [],
             hasRain: false,
             hasData: false
-		}
-    },
+        }
 
-	getTemplate: function () {
-		return "MMM-RainForecast-FR.njk"
-	},
-
-	getTemplateData: function () {
-		return this.config;
-	},
-
-    // Define required scripts.
-    getScripts: function() {
-        return ["moment.js"];
-    },
-
-    // Define required scripts.
-    getStyles: function() {
-        return ["MMM-RainForecast-FR.css"];
-    },
-
-    // Define start sequence.
-    start: function() {
-        Log.info("Starting module: " + this.name);
-
-        // Set locale.
-        moment.locale(config.language);
-        
         this.loaded = false;
-        this.error = false;
-        this.errorDescription = "";
-        this.getRainForecast();
-        this.updateTimer = null;
-        this.systemp = "";
-    },
-
-    getRainForecast: function() {
-        if (this.config.debug === 1) {
-			Log.info("Meteo France rain forecast : Getting info.");
-		}
-		this.sendSocketNotification(this.config.socknot, this.config);
+        this.scheduleUpdate(this.config.initialLoadDelay);
     },
 
     /* processWeather(data)
@@ -78,53 +62,65 @@ Module.register("MMM-RainForecast-FR", {
      *
      * argument data object - Weather information received form meteofrance.fr.
      */
-    processWeather: function(data) {   
-		if (this.config.debug === 1) {
-			Log.info('RAINFORECAST_FR processWeather data : ');
-			Log.info(data);
-		} 
-		
+    processWeather: function (data) {
+        if (this.config.debug === 1) {
+            Log.info('RAINFORECAST_FR processWeather data : ');
+            Log.info(data);
+        }
+        
         if (data) {
-            this.config.rainData.hasData = data.forecast != null;      
-            
+            this.rainData.hasData = data.forecast != null;
+
             if (data.forecast && data.forecast.length > 0) {
                 // Text data
-                this.config.rainData.rainText = data.forecast[0].desc;
+                this.rainData.rainText = data.forecast[0].desc;
 
                 // Graph data
-                this.config.rainData.rainGraph = data.forecast;
-                const dataWithRain = this.config.rainData.rainGraph.filter(rainGraph => rainGraph.rain >= 2);
+                this.rainData.rainGraph = data.forecast;
+                const dataWithRain = this.rainData.rainGraph.filter(rainGraph => rainGraph.rain >= 2);
                 if (this.config.debug === 1) {
                     Log.info(this.name + " getData : ");
                     Log.info(dataWithRain);
                 }
-                this.config.rainData.hasRain = dataWithRain.length > 0;
-                this.config.rainData.rainGraphTimes = [];
-                data.forecast.forEach(element => this.config.rainData.rainGraphTimes.push(moment(element.dt, "X").format('H:mm')));
+                this.rainData.hasRain = dataWithRain.length > 0;
+                this.rainData.rainGraphTimes = [];
+                data.forecast.forEach(element => this.rainData.rainGraphTimes.push(moment(element.dt, "X").format('H:mm')));
             }
+        } else {
+            this.rainData.hasData = false;
+        }
 
+        this.loaded = true;
+        this.updateDom(this.config.animationSpeed);
+        this.scheduleUpdate();
+    },
+
+    // Request new data from Meteo France with node_helper
+    socketNotificationReceived: function (notification, payload) {
+        if (notification === "STARTED") {
             this.updateDom(this.config.animationSpeed);
-            
-		} else {
-            this.config.rainData.hasData = false;
+        } else if (notification === "DATA") {
+            this.processWeather(JSON.parse(payload));
+        } else if (notification === "ERROR") {
+            Log.error(this.name + ": Do not access to data (" + payload + ").");
+        } else if (notification === "DEBUG") {
+            Log.log(JSON.parse(payload));
         }
     },
 
-    socketNotificationReceived: function(notification, payload) {
-        var self = this;
-
-        if (this.config.debug === 1) {
-			Log.info('RAINFORECAST_FR received ' + notification);
-		}
-
-        if (notification === this.config.sockrcv) {
-            if (this.config.debug === 1) {
-				Log.info('received ' + this.config.sockrcv);
-				Log.info(payload);
-			}
-            self.processWeather(JSON.parse(payload));
+    // Schedule next update
+    scheduleUpdate: function (delay) {
+        var nextLoad = this.config.updateInterval;
+        if (typeof delay !== "undefined" && delay >= 0) {
+            nextLoad = delay;
         }
 
-    }
+        clearInterval(this.timerUpdate);
+
+        var self = this;
+        this.timerUpdate = setTimeout(function () {
+            self.sendSocketNotification('CONFIG', self.config);
+        }, nextLoad);
+    },
 
 });
