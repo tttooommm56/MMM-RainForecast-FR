@@ -4,13 +4,13 @@
 -->
 {% if loaded %}
 	{% if not rainData.hasData %}
-		<div class="normal medium title">Pas de données disponibles</div>
+		<div class="small title bright">Pas de données disponibles</div>
 	{% elif not rainData.hasRain %}
-		<div class="normal medium title">Pas de pluie prévue dans l'heure</div>
+		<div class="small title bright">Pas de pluie prévue dans l'heure</div>
 	{% else %}
 		{% if config.showText %}
 			<!-- Text rain forecast -->
-			<div class="normal medium title">{{ rainData.rainText }}</div>
+			<div class="small title bright">{{ rainData.rainText }}</div>
 		{% endif %}	
 
 		{% if config.showGraph %}
