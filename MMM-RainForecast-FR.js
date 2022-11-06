@@ -116,10 +116,9 @@ Module.register("MMM-RainForecast-FR", {
     // Request new data from Meteo France with node_helper
     socketNotificationReceived: function (notification, payload) {
         switch (notification) {
-            case "STARTED" : this.updateDom(this.config.animationSpeed); break;
-            case "DATA" : this.processWeather(payload); break;
-            case "ERROR" : Log.error(this.name + ": Do not access to data (" + payload + ")."); break;
-            case "DEBUG" : Log.log(payload); break;
+            case "RAINFORECASTFR_STARTED" : this.updateDom(this.config.animationSpeed); break;
+            case "RAINFORECASTFR_DATA" : this.processWeather(payload); break;
+            case "RAINFORECASTFR_ERROR" : Log.error(this.name + ": Do not access to data (" + payload + ")."); break;
             case "USER_PRESENCE" : 
                 this.debugger("Fct notificationReceived USER_PRESENCE - payload = " + payload);
                 userPresence = payload;
@@ -134,12 +133,12 @@ Module.register("MMM-RainForecast-FR", {
 		if (userPresence === true && this.moduleHidden === false) { // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché		
 			this.debugger(this.name + " is back and user present ! Let's update (intervalID=" + this.intervalID + ")");
 
-            this.sendSocketNotification('CONFIG', this.config);
+            this.sendSocketNotification('RAINFORECASTFR_CONFIG', this.config);
 
 			// if no interval update active, then schedule a new interval update (to avoid multiple instances)
 			if (this.intervalID === 0) {
                 var self = this;          
-                this.intervalID = setInterval(function () {self.sendSocketNotification('CONFIG', self.config);}, self.config.updateInterval);
+                this.intervalID = setInterval(function () {self.sendSocketNotification('RAINFORECASTFR_CONFIG', self.config);}, self.config.updateInterval);
 			}
 
 		} else { // (userPresence = false OR ModuleHidden = true)

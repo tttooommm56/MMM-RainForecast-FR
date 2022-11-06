@@ -22,22 +22,22 @@ module.exports = NodeHelper.create({
 		axios({url: meteoUrl, method: 'get'})
 		.then((response) => {
 			if (response.status == 200 && response.data) {
-				self.sendSocketNotification('DATA', response.data);
+				self.sendSocketNotification('RAINFORECASTFR_DATA', response.data);
 			} else {
-				self.sendSocketNotification("ERROR", 'Meteo France error: ' + response.statusText);
+				self.sendSocketNotification("RAINFORECASTFR_ERROR", 'Meteo France error: ' + response.statusText);
 			}
 		})
 		.catch((error) => {
-			self.sendSocketNotification("ERROR", error.message);
+			self.sendSocketNotification("RAINFORECASTFR_ERROR", error.message);
 		});
 	},
 
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function (notification, payload) {
 		var self = this;
-		if (notification === "CONFIG") {
+		if (notification === "RAINFORECASTFR_CONFIG") {
 			self.config = payload;
-			self.sendSocketNotification("STARTED", true);
+			self.sendSocketNotification("RAINFORECASTFR_STARTED", true);
 			self.fecthMeteoFrance();
 		}
 	}
