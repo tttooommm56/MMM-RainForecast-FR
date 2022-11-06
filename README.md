@@ -22,14 +22,14 @@ npm install
 Add the module inside `config.js` placing it where you prefer 
 
 
-## Update:
+## Update
 
 In your terminal, go to your `MMM-RainForecast-FR` module folder and execute :
 ```shell
 git pull
 ```
 
-Install dependencies :
+Update dependencies :
 ```shell
 npm install
 ```
