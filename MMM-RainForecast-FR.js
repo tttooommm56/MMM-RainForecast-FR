@@ -5,16 +5,18 @@
  * By tttooommm56 https://github.com/tttooommm56
  * MIT Licensed.
  */
+
+// To manage PIR sensor signal and module.hidden at the same time
+var userPresence = true; // present by default (no PIR sensor to shutdown)
+
 Module.register("MMM-RainForecast-FR", {
 
     // Default module config.
     defaults: {
         updateInterval: 5 * 60 * 1000, // every 5 minutes
-        initialLoadDelay: 0, // 0 seconds delay
         apiBaseUrl: "http://webservice.meteofrance.com/rain",
         showText: true,
         showGraph: true,
-        debug: 1
     },
 
     getTemplate: function () {
@@ -55,8 +57,24 @@ Module.register("MMM-RainForecast-FR", {
         }
 
         this.loaded = false;
-        this.scheduleUpdate(this.config.initialLoadDelay);
+
+        this.intervalID = 0;
+        this.moduleHidden = false;
+
+        this.scheduleUpdate(); 
     },
+
+    suspend: function () { //fct core called when module is hidden
+		this.moduleHidden = true; // It should be proper to use this.hidden, but random behaviour...
+		this.debugger("Fct suspend - ModuleHidden = " + this.moduleHidden);
+		this.scheduleUpdate(); 
+	},
+
+	resume: function () { //fct core called when module is displayed
+		this.moduleHidden = false;
+		this.debugger("Fct resume - ModuleHidden = " + this.moduleHidden);
+		this.scheduleUpdate();
+	},
 
     /* processWeather(data)
      * Uses the received data to set the various values.
@@ -64,7 +82,7 @@ Module.register("MMM-RainForecast-FR", {
      * argument data object - Weather information received form meteofrance.fr.
      */
     processWeather: function (data) {
-        if (this.config.debug === 1) {
+        if (this.config.debug === true) {
             Log.info('RAINFORECAST_FR processWeather data : ');
             Log.info(data);
         }
@@ -93,35 +111,47 @@ Module.register("MMM-RainForecast-FR", {
 
         this.loaded = true;
         this.updateDom(this.config.animationSpeed);
-        this.scheduleUpdate();
     },
 
     // Request new data from Meteo France with node_helper
     socketNotificationReceived: function (notification, payload) {
-        if (notification === "STARTED") {
-            this.updateDom(this.config.animationSpeed);
-        } else if (notification === "DATA") {
-            this.processWeather(payload);
-        } else if (notification === "ERROR") {
-            Log.error(this.name + ": Do not access to data (" + payload + ").");
-        } else if (notification === "DEBUG") {
-            Log.log(payload);
+        switch (notification) {
+            case "STARTED" : this.updateDom(this.config.animationSpeed); break;
+            case "DATA" : this.processWeather(payload); break;
+            case "ERROR" : Log.error(this.name + ": Do not access to data (" + payload + ")."); break;
+            case "DEBUG" : Log.log(payload); break;
+            case "USER_PRESENCE" : 
+                this.debugger("Fct notificationReceived USER_PRESENCE - payload = " + payload);
+                userPresence = payload;
+                this.scheduleUpdate();
+                break;
         }
     },
 
-    // Schedule next update
-    scheduleUpdate: function (delay) {
-        var nextLoad = this.config.updateInterval;
-        if (typeof delay !== "undefined" && delay >= 0) {
-            nextLoad = delay;
-        }
+    scheduleUpdate: function () {
+		this.debugger("Call scheduleUpdate : " + userPresence + " / " + this.moduleHidden);
 
-        clearInterval(this.timerUpdate);
+		if (userPresence === true && this.moduleHidden === false) { // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché		
+			this.debugger(this.name + " is back and user present ! Let's update (intervalID=" + this.intervalID + ")");
 
-        var self = this;
-        this.timerUpdate = setTimeout(function () {
-            self.sendSocketNotification('CONFIG', self.config);
-        }, nextLoad);
-    },
+            this.sendSocketNotification('CONFIG', this.config);
 
+			// if no interval update active, then schedule a new interval update (to avoid multiple instances)
+			if (this.intervalID === 0) {
+                var self = this;          
+                this.intervalID = setInterval(function () {self.sendSocketNotification('CONFIG', self.config);}, self.config.updateInterval);
+			}
+
+		} else { // (userPresence = false OR ModuleHidden = true)
+			this.debugger("Nobody watch : stop update ! ID : " + this.intervalID);
+			clearInterval(this.intervalID); // stop current interval update
+			this.intervalID = 0; // reset variable
+		}
+	},
+
+    debugger: function (message) {
+		if (this.config.debug === true) {
+			Log.log("[MMM-RainForecast-FR] " + message);
+		}
+	}
 });

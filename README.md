@@ -1,12 +1,38 @@
 # MMM-RainForecast-FR
 A <a href="https://github.com/MichMich/MagicMirror">MagicMirror</a> module to display forecast rain in France.
 
+If a PIR-sensor using MMM-PIR-Sensor module is used, this information will not be updated during screen off. 
+
+The infos will also not be updated when no instance of the MMM-RainForecast-FR module are displayed on the screen (for example hidden by using MMM-Remote-Control or any carousel like MMM-Pages). This will allow to reduce the number of requests to the Meteo France API. 
+As soon as one MMM-RainForecast-FR module will be again displayed on the screen, a request will be called to update data. 
+
 
 ## Installation
-1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/tttooommm56/MMM-RainForecast-FR.git`.
-2. Enter the new `MMM-RainForecast-FR` directory and execute `npm install`.
-3. Add the module inside `config.js` placing it where you prefer 
 
+Navigate into your MagicMirror's `modules` folder and execute :
+```shell
+git clone https://github.com/tttooommm56/MMM-RainForecast-FR.git
+```
+
+Enter the new `MMM-RainForecast-FR` folder and execute :
+```shell
+npm install
+```
+
+Add the module inside `config.js` placing it where you prefer 
+
+
+## Update:
+
+In your terminal, go to your `MMM-RainForecast-FR` module folder and execute :
+```shell
+git pull
+```
+
+Install dependencies :
+```shell
+npm install
+```
 
 ## Configuration
 

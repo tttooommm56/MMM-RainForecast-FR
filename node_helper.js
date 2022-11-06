@@ -26,10 +26,6 @@ module.exports = NodeHelper.create({
 			} else {
 				self.sendSocketNotification("ERROR", 'Meteo France error: ' + response.statusText);
 			}
-
-			setTimeout(function () {
-				self.fecthMeteoFrance();
-			}, self.config.updateInterval);
 		})
 		.catch((error) => {
 			self.sendSocketNotification("ERROR", error.message);
@@ -39,7 +35,6 @@ module.exports = NodeHelper.create({
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function (notification, payload) {
 		var self = this;
-
 		if (notification === "CONFIG") {
 			self.config = payload;
 			self.sendSocketNotification("STARTED", true);
