@@ -13,7 +13,8 @@ Module.register("MMM-RainForecast-FR", {
         initialLoadDelay: 0, // 0 seconds delay
         apiBaseUrl: "http://webservice.meteofrance.com/rain",
         showText: true,
-        showGraph: true
+        showGraph: true,
+        debug: 1
     },
 
     getTemplate: function () {
@@ -100,11 +101,11 @@ Module.register("MMM-RainForecast-FR", {
         if (notification === "STARTED") {
             this.updateDom(this.config.animationSpeed);
         } else if (notification === "DATA") {
-            this.processWeather(JSON.parse(payload));
+            this.processWeather(payload);
         } else if (notification === "ERROR") {
             Log.error(this.name + ": Do not access to data (" + payload + ").");
         } else if (notification === "DEBUG") {
-            Log.log(JSON.parse(payload));
+            Log.log(payload);
         }
     },
 

@@ -1,6 +1,6 @@
 {
   "name": "mmm-rainforecast-fr",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A MagicMirror module to display forecast rain in France.",
   "repository": {
     "type": "git",
@@ -13,6 +13,6 @@
   "author": "Thomas Cousin",
   "license": "MIT",
   "dependencies": {
-    "request": "^2.88.0"
+    "axios": "^1.1.3"
   }
 }
