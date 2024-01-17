@@ -14,7 +14,7 @@ Module.register("MMM-RainForecast-FR", {
     // Default module config.
     defaults: {
         updateInterval: 5 * 60 * 1000, // every 5 minutes
-        apiBaseUrl: "http://webservice.meteofrance.com/rain",
+        apiBaseUrl: "https://rpcache-aa.meteofrance.com/internet2018client/2.0/nowcast/rain",
         showText: true,
         showGraph: true,
     },
@@ -88,22 +88,22 @@ Module.register("MMM-RainForecast-FR", {
         }
         
         if (data) {
-            this.rainData.hasData = data.forecast != null;
+            this.rainData.hasData = data.properties != null && data.properties.forecast != null;
 
-            if (data.forecast && data.forecast.length > 0) {
-                // Text data
-                this.rainData.rainText = data.forecast[0].desc;
+            if (this.rainData.hasData && data.properties.forecast.length > 0) {
+                // Text data for current situation
+                this.rainData.rainText = data.properties.forecast[0].rain_intensity_description;
 
                 // Graph data
-                this.rainData.rainGraph = data.forecast;
-                const dataWithRain = this.rainData.rainGraph.filter(rainGraph => rainGraph.rain >= 2);
+                this.rainData.rainGraph = data.properties.forecast;
+                const dataWithRain = this.rainData.rainGraph.filter(rainGraph => rainGraph.rain_intensity >= 2);
                 if (this.config.debug === 1) {
-                    Log.info(this.name + " getData : ");
+                    Log.info(this.name + " dataWithRain : ");
                     Log.info(dataWithRain);
                 }
                 this.rainData.hasRain = dataWithRain.length > 0;
                 this.rainData.rainGraphTimes = [];
-                data.forecast.forEach(element => this.rainData.rainGraphTimes.push(moment(element.dt, "X").format('H:mm')));
+                data.properties.forecast.forEach(element => this.rainData.rainGraphTimes.push(moment(element.time).format('H:mm')));
             }
         } else {
             this.rainData.hasData = false;

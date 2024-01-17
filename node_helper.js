@@ -16,10 +16,11 @@ module.exports = NodeHelper.create({
 	fecthMeteoFrance: function () {
 		var self = this;
 		this.fetcherRunning = true;
-		var token = "__Wj7dVSTjV9YGu1guveLyDq0g7S7TfTjaHBTPTpO0kj8__";
-		var meteoUrl = this.config.apiBaseUrl + "?lang=fr&lat=" + this.config.lat + "&lon=" + this.config.lon + "&token=" + token;
+		const token = "__Wj7dVSTjV9YGu1guveLyDq0g7S7TfTjaHBTPTpO0kj8__";
+		const authorization = "Bearer ".concat(token); 
+		var meteoUrl = this.config.apiBaseUrl + "?lat=" + this.config.lat + "&lon=" + this.config.lon;
 
-		axios({url: meteoUrl, method: 'get'})
+		axios({url: meteoUrl, method: 'get', headers: { Authorization: authorization }})
 		.then((response) => {
 			if (response.status == 200 && response.data) {
 				self.sendSocketNotification('RAINFORECASTFR_DATA', response.data);

@@ -19,17 +19,17 @@
 				<table>
 					<tr>
 						{% for rainPlot in rainData.rainGraph  %}
-							<td class={{ "raining" if rainPlot.rain >= 4 }}></td>
+							<td class={{ "raining" if rainPlot.rain_intensity >= 4 }}></td>
 						{% endfor %}
 					</tr>
 					<tr>
 						{% for rainPlot in rainData.rainGraph  %}
-							<td class={{ "raining" if rainPlot.rain >= 3 }}></td>
+							<td class={{ "raining" if rainPlot.rain_intensity >= 3 }}></td>
 						{% endfor %}
 					</tr>
 					<tr>
 						{% for rainPlot in rainData.rainGraph  %}
-							<td class={{ "raining" if rainPlot.rain >= 2 }}></td>
+							<td class={{ "raining" if rainPlot.rain_intensity >= 2 }}></td>
 						{% endfor %}
 					</tr>
 
