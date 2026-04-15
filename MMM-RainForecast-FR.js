@@ -14,7 +14,7 @@ Module.register("MMM-RainForecast-FR", {
     // Default module config.
     defaults: {
         updateInterval: 5 * 60 * 1000, // every 5 minutes
-        apiBaseUrl: "https://rpcache-aa.meteofrance.com/internet2018client/2.0/nowcast/rain",
+        apiBaseUrl: "https://rwg.meteofrance.com/internet2018client/2.0/nowcast/rain",
         showText: true,
         showGraph: true,
     },
