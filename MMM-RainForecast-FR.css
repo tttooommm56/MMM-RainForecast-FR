@@ -14,10 +14,19 @@
     width: 40px;
 }
 .MMM-RainForecast-FR .hours td {
-    text-align: left !important;
+    text-align: right !important;
+    position: relative;
+}
+.MMM-RainForecast-FR .hours td::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 5px;
+    border-right: 2px solid #fff;
 }
 .MMM-RainForecast-FR .hours td span {
-    margin-left: -14px;
+    margin-right: -14px;
 }
 .MMM-RainForecast-FR .raining {
     background-color: #fff;
