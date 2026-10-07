@@ -10,7 +10,6 @@
 
 
 var NodeHelper = require('node_helper');
-var axios = require('axios');
 
 module.exports = NodeHelper.create({
 	fecthMeteoFrance: function () {
@@ -20,10 +19,16 @@ module.exports = NodeHelper.create({
 		const authorization = "Bearer ".concat(token); 
 		var meteoUrl = this.config.apiBaseUrl + "?lat=" + this.config.lat + "&lon=" + this.config.lon;
 
-		axios({url: meteoUrl, method: 'get', headers: { Authorization: authorization }})
-		.then((response) => {
-			if (response.status == 200 && response.data) {
-				self.sendSocketNotification('RAINFORECASTFR_DATA', response.data);
+		fetch(meteoUrl, { method: 'GET', headers: { Authorization: authorization }})
+		.then(async (response) => {
+			if (!response.ok) {
+				self.sendSocketNotification("RAINFORECASTFR_ERROR", 'Meteo France error: ' + response.statusText);
+				return;
+			}
+
+			const data = await response.json();
+			if (response.status == 200 && data) {
+				self.sendSocketNotification('RAINFORECASTFR_DATA', data);
 			} else {
 				self.sendSocketNotification("RAINFORECASTFR_ERROR", 'Meteo France error: ' + response.statusText);
 			}

@@ -14,11 +14,6 @@ Navigate into your MagicMirror's `modules` folder and execute :
 git clone https://github.com/tttooommm56/MMM-RainForecast-FR.git
 ```
 
-Enter the new `MMM-RainForecast-FR` folder and execute :
-```shell
-npm install
-```
-
 Add the module inside `config.js` placing it where you prefer 
 
 
@@ -27,11 +22,6 @@ Add the module inside `config.js` placing it where you prefer
 In your terminal, go to your `MMM-RainForecast-FR` module folder and execute :
 ```shell
 git pull
-```
-
-Update dependencies :
-```shell
-npm install
 ```
 
 ## Configuration
