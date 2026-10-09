@@ -22,8 +22,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    height: 5px;
-    border-right: 2px solid #fff;
+    height: 4px;
+    border-right: 1px solid;
 }
 .MMM-RainForecast-FR .hours td span {
     margin-right: -14px;
